@@ -1,6 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import { PageContainer } from '@/components/common/PageContainer'
 import { SectionTitle } from '@/components/common/SectionTitle'
@@ -13,9 +15,11 @@ import {
   createContentSchema,
   type CreateContentFormValues,
 } from '@/pages/content/create-content.schema'
+import { createContent } from '@/services/content.service'
 
 export function CreateContentPage() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const {
     formState: { errors },
     handleSubmit,
@@ -29,8 +33,24 @@ export function CreateContentPage() {
     },
   })
 
-  function handleCreate() {
-    return undefined
+  const createContentMutation = useMutation({
+    mutationFn: createContent,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['contents'] })
+      toast.success('Content created successfully')
+      navigate('/contents')
+    },
+    onError: () => {
+      toast.error('Failed to create content')
+    },
+  })
+
+  function handleCreate(values: CreateContentFormValues) {
+    createContentMutation.mutate({
+      title: values.title,
+      content: values.content,
+      image: values.image || null,
+    })
   }
 
   return (

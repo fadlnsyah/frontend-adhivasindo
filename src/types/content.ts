@@ -26,3 +26,15 @@ export type ContentsResponse = {
   data: Content[]
   meta: PaginationMeta
 }
+
+export type CreateContentRequest = {
+  title: string
+  content: string
+  image?: string | null
+}
+
+export type ContentResponse = {
+  success: boolean
+  message: string
+  data: Content
+}
