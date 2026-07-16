@@ -17,7 +17,7 @@ import {
 export function DashboardPage() {
   return (
     <AppLayout>
-      <PageContainer className="grid max-w-none grid-cols-[minmax(0,1fr)_20rem] gap-8">
+      <PageContainer className="grid max-w-none gap-8 xl:grid-cols-[minmax(0,1fr)_20rem]">
         <div className="space-y-7">
           <DashboardHero {...featuredModule} />
 
@@ -25,7 +25,7 @@ export function DashboardPage() {
             <h2 className="mb-5 text-lg font-extrabold uppercase text-[#2a2548]">
               Modul Kompetensi
             </h2>
-            <div className="grid grid-cols-3 gap-7">
+            <div className="grid gap-6 md:grid-cols-2 2xl:grid-cols-3">
               {competencyModules.map((module) => (
                 <CompetencyCard key={module.title} {...module} />
               ))}

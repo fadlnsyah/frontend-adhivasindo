@@ -87,7 +87,7 @@ export function ContentsPage() {
   return (
     <AppLayout>
       <PageContainer>
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
           <div>
             <SectionTitle eyebrow="Content">Content Management</SectionTitle>
             <p className="mt-3 text-sm text-slate-500">
@@ -100,7 +100,7 @@ export function ContentsPage() {
           </Button>
         </div>
 
-        <div className="relative max-w-md">
+        <div className="relative w-full max-w-md">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
           <Input
             className="h-11 pl-10"
@@ -112,7 +112,7 @@ export function ContentsPage() {
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 6 }).map((_, index) => (
               <ContentLoadingCard key={index} />
             ))}
@@ -130,7 +130,7 @@ export function ContentsPage() {
         ) : null}
 
         {!isLoading && !isError && contents.length > 0 ? (
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {contents.map((content) => (
               <ContentCard
                 content={content}

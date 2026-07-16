@@ -18,7 +18,7 @@ export function ContentCard({
   onEdit,
 }: ContentCardProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-md hover:shadow-slate-200/70">
       {content.image ? (
         <img
           alt={content.title}
@@ -32,7 +32,7 @@ export function ContentCard({
       )}
 
       <div className="p-5">
-        <h3 className="line-clamp-2 text-lg font-bold text-[#27243f]">
+        <h3 className="line-clamp-2 text-lg font-bold leading-snug text-[#27243f]">
           {content.title}
         </h3>
         <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-500">
@@ -49,7 +49,7 @@ export function ContentCard({
           <span className="shrink-0">{formatContentDate(content.created_at)}</span>
         </div>
 
-        <div className="mt-4 flex items-center justify-end gap-2">
+        <div className="mt-4 flex flex-wrap items-center justify-end gap-2">
           <button
             className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
             onClick={() => onEdit?.(content)}

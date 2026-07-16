@@ -20,13 +20,13 @@ export function DashboardHero({
   return (
     <section className="rounded-lg bg-gradient-to-br from-[#9b7cff] to-[#6c4df6] px-7 py-6 text-white shadow-sm">
       <p className="text-xs font-bold uppercase text-[#ffe56f]">{category}</p>
-      <div className="mt-4 flex items-end justify-between gap-8">
+      <div className="mt-4 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-3xl font-bold leading-tight">{title}</h2>
+          <h2 className="text-2xl font-bold leading-tight md:text-3xl">{title}</h2>
           <p className="mt-3 max-w-lg text-sm leading-6 text-white/78">
             {description}
           </p>
-          <div className="mt-8 flex items-center gap-10 text-sm font-semibold text-white/85">
+          <div className="mt-8 flex flex-wrap items-center gap-5 text-sm font-semibold text-white/85 lg:gap-10">
             <span className="flex items-center gap-2">
               <UserRound className="size-4" />
               Pemateri By {instructor}
