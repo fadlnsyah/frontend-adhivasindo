@@ -1,32 +1,84 @@
-# React + TypeScript + Vite
+# Frontend Adhivasindo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Frontend untuk Take Home Test Fullstack Adhivasindo. Project ini menggunakan React, Vite, dan TypeScript sebagai fondasi aplikasi LMS.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19
+- Vite
+- TypeScript
+- React Router DOM
+- Axios
+- TanStack Query
+- React Hook Form
+- Zod
+- Tailwind CSS
+- shadcn/ui
+- Lucide React
+- Sonner
+- ESLint
+- Prettier
 
-## React Compiler
+## Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Salin file environment example jika diperlukan untuk development lokal.
+
+```bash
+copy .env.example .env
+```
+
+## Run Project
+
+```bash
+npm run dev
+```
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+## Environment
+
+```env
+VITE_API_URL=http://localhost:8000/api
+```
+
+## Folder Structure
+
+```text
+src/
+├── api/
+├── assets/
+├── components/
+│   ├── common/
+│   ├── layout/
+│   └── ui/
+├── hooks/
+├── layouts/
+├── lib/
+├── pages/
+│   ├── auth/
+│   └── content/
+├── routes/
+├── services/
+├── types/
+└── utils/
+```
+
+## Routes
+
+| Path | Description |
+| --- | --- |
+| `/` | Redirect ke `/login` |
+| `/login` | Placeholder halaman login |
+| `/contents` | Placeholder halaman content |
+| `*` | Placeholder halaman 404 |
