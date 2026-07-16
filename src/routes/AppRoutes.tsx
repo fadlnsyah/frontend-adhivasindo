@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { LoginPage } from '@/pages/auth/LoginPage'
 import { CreateContentPage } from '@/pages/content/CreateContentPage'
 import { ContentsPage } from '@/pages/content/ContentsPage'
+import { EditContentPage } from '@/pages/content/EditContentPage'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { ProtectedRoute } from '@/routes/ProtectedRoute'
@@ -33,6 +34,14 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <CreateContentPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/contents/:id/edit"
+        element={
+          <ProtectedRoute>
+            <EditContentPage />
           </ProtectedRoute>
         }
       />
