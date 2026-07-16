@@ -1,13 +1,19 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Lock, Mail } from 'lucide-react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
 import { type LoginFormValues, loginSchema } from '@/pages/auth/login.schema'
+import { login } from '@/services/auth.service'
 
 export function LoginPage() {
+  const navigate = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     formState: { errors },
     handleSubmit,
@@ -20,8 +26,22 @@ export function LoginPage() {
     },
   })
 
-  function handleLogin() {
-    return undefined
+  async function handleLogin(values: LoginFormValues) {
+    setIsSubmitting(true)
+
+    try {
+      const response = await login(values)
+
+      localStorage.setItem('access_token', response.data.token)
+      localStorage.setItem('auth_user', JSON.stringify(response.data.user))
+
+      toast.success(response.message)
+      navigate('/contents')
+    } catch {
+      toast.error('Login gagal')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -92,8 +112,8 @@ export function LoginPage() {
             ) : null}
           </div>
 
-          <Button className="h-11 w-full" type="submit">
-            Login
+          <Button className="h-11 w-full" disabled={isSubmitting} type="submit">
+            {isSubmitting ? 'Loading...' : 'Login'}
           </Button>
         </form>
       </Card>
