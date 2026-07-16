@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { LoginPage } from '@/pages/auth/LoginPage'
+import { CreateContentPage } from '@/pages/content/CreateContentPage'
 import { ContentsPage } from '@/pages/content/ContentsPage'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
@@ -24,6 +25,14 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <ContentsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/contents/create"
+        element={
+          <ProtectedRoute>
+            <CreateContentPage />
           </ProtectedRoute>
         }
       />
