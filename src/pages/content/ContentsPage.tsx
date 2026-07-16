@@ -1,16 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { ContentCard } from '@/components/content/ContentCard'
+import { ContentEmptyState } from '@/components/content/ContentEmptyState'
+import { ContentErrorState } from '@/components/content/ContentErrorState'
+import { ContentLoadingCard } from '@/components/content/ContentLoadingCard'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { PageContainer } from '@/components/common/PageContainer'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { getContents } from '@/services/content.service'
 
 export function ContentsPage() {
-  const { data } = useQuery({
+  const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ['contents'],
     queryFn: getContents,
   })
+
+  const contents = data?.data ?? []
 
   return (
     <AppLayout>
@@ -22,11 +27,27 @@ export function ContentsPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
-          {data?.data.map((content) => (
-            <ContentCard content={content} key={content.id} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="grid grid-cols-3 gap-6">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <ContentLoadingCard key={index} />
+            ))}
+          </div>
+        ) : null}
+
+        {isError ? <ContentErrorState onRetry={() => void refetch()} /> : null}
+
+        {!isLoading && !isError && contents.length === 0 ? (
+          <ContentEmptyState />
+        ) : null}
+
+        {!isLoading && !isError && contents.length > 0 ? (
+          <div className="grid grid-cols-3 gap-6">
+            {contents.map((content) => (
+              <ContentCard content={content} key={content.id} />
+            ))}
+          </div>
+        ) : null}
       </PageContainer>
     </AppLayout>
   )
