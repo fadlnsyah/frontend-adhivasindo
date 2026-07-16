@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Plus } from 'lucide-react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Plus, Search } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { ContentCard } from '@/components/content/ContentCard'
@@ -13,6 +13,8 @@ import { PageContainer } from '@/components/common/PageContainer'
 import { SectionTitle } from '@/components/common/SectionTitle'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Input } from '@/components/ui/Input'
+import { useDebounce } from '@/hooks/useDebounce'
 import {
   deleteContent,
   getContentErrorMessage,
@@ -22,11 +24,34 @@ import type { Content } from '@/types/content'
 
 export function ContentsPage() {
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
   const queryClient = useQueryClient()
   const [selectedContent, setSelectedContent] = useState<Content | null>(null)
+  const page = Number(searchParams.get('page') ?? '1')
+  const search = searchParams.get('search') ?? ''
+  const [searchInput, setSearchInput] = useState(search)
+  const debouncedSearch = useDebounce(searchInput, 300)
+
+  useEffect(() => {
+    if (debouncedSearch === search) {
+      return
+    }
+
+    const nextParams = new URLSearchParams(searchParams)
+
+    if (debouncedSearch) {
+      nextParams.set('search', debouncedSearch)
+    } else {
+      nextParams.delete('search')
+    }
+
+    nextParams.delete('page')
+    setSearchParams(nextParams)
+  }, [debouncedSearch, search, searchParams, setSearchParams])
+
   const { data, isError, isLoading, refetch } = useQuery({
-    queryKey: ['contents'],
-    queryFn: getContents,
+    queryKey: ['contents', page, search],
+    queryFn: () => getContents({ page, search }),
   })
 
   const deleteContentMutation = useMutation({
@@ -60,6 +85,17 @@ export function ContentsPage() {
           </Button>
         </div>
 
+        <div className="relative max-w-md">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+          <Input
+            className="h-11 pl-10"
+            onChange={(event) => setSearchInput(event.target.value)}
+            placeholder="Search content..."
+            type="search"
+            value={searchInput}
+          />
+        </div>
+
         {isLoading ? (
           <div className="grid grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -71,7 +107,11 @@ export function ContentsPage() {
         {isError ? <ContentErrorState onRetry={() => void refetch()} /> : null}
 
         {!isLoading && !isError && contents.length === 0 ? (
-          <ContentEmptyState />
+          <ContentEmptyState
+            message={
+              search ? 'No content found' : 'No content available.'
+            }
+          />
         ) : null}
 
         {!isLoading && !isError && contents.length > 0 ? (

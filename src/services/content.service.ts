@@ -12,8 +12,24 @@ type ApiErrorResponse = {
   message?: string
 }
 
-export async function getContents() {
-  const response = await apiClient.get<ContentsResponse>('/contents')
+type GetContentsParams = {
+  page?: number
+  perPage?: number
+  search?: string
+}
+
+export async function getContents({
+  page = 1,
+  perPage = 10,
+  search = '',
+}: GetContentsParams = {}) {
+  const response = await apiClient.get<ContentsResponse>('/contents', {
+    params: {
+      page,
+      per_page: perPage,
+      search: search || undefined,
+    },
+  })
 
   return response.data
 }
