@@ -43,3 +43,9 @@ export async function updateContent(id: number, payload: CreateContentRequest) {
 
   return response.data
 }
+
+export async function deleteContent(id: number) {
+  const response = await apiClient.delete<ContentResponse>(`/contents/${id}`)
+
+  return response.data
+}

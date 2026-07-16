@@ -1,4 +1,4 @@
-import { FileText, UserRound } from 'lucide-react'
+import { FileText, Pencil, Trash2, UserRound } from 'lucide-react'
 
 import { Card } from '@/components/ui/Card'
 import type { Content } from '@/types/content'
@@ -6,9 +6,17 @@ import { formatContentDate } from '@/utils/date'
 
 type ContentCardProps = {
   content: Content
+  deleting?: boolean
+  onDelete?: (content: Content) => void
+  onEdit?: (content: Content) => void
 }
 
-export function ContentCard({ content }: ContentCardProps) {
+export function ContentCard({
+  content,
+  deleting = false,
+  onDelete,
+  onEdit,
+}: ContentCardProps) {
   return (
     <Card className="overflow-hidden">
       {content.image ? (
@@ -39,6 +47,26 @@ export function ContentCard({ content }: ContentCardProps) {
             </span>
           </span>
           <span className="shrink-0">{formatContentDate(content.created_at)}</span>
+        </div>
+
+        <div className="mt-4 flex items-center justify-end gap-2">
+          <button
+            className="inline-flex h-9 items-center gap-2 rounded-md border border-slate-200 px-3 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            onClick={() => onEdit?.(content)}
+            type="button"
+          >
+            <Pencil className="size-3.5" />
+            Edit
+          </button>
+          <button
+            className="inline-flex h-9 items-center gap-2 rounded-md border border-red-100 px-3 text-xs font-semibold text-red-500 transition hover:bg-red-50 disabled:pointer-events-none disabled:opacity-60"
+            disabled={deleting}
+            onClick={() => onDelete?.(content)}
+            type="button"
+          >
+            <Trash2 className="size-3.5" />
+            {deleting ? 'Deleting...' : 'Delete'}
+          </button>
         </div>
       </div>
     </Card>
