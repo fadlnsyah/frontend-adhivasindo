@@ -7,7 +7,7 @@ export function ContentsPage() {
   return (
     <AppLayout>
       <PageContainer>
-        <Card className="min-h-[calc(100vh-8.5rem)] border-dashed p-8">
+        <Card className="min-h-[calc(100vh-8.5rem)] border-dashed border-slate-200 p-8">
           <SectionTitle eyebrow="Content">LMS Content Area</SectionTitle>
         </Card>
       </PageContainer>

@@ -9,11 +9,11 @@ type AppLayoutProps = {
 
 export function AppLayout({ children }: AppLayoutProps) {
   return (
-    <div className="min-h-screen bg-[#f8f8fb] text-[#27243f]">
+    <div className="min-h-screen bg-[#f7f7fb] text-[#27243f]">
       <AppTopbar />
       <div className="flex">
         <AppSidebar />
-        <main className="min-w-0 flex-1 px-7 py-7">{children}</main>
+        <main className="min-w-0 flex-1 px-8 py-7">{children}</main>
       </div>
     </div>
   )
