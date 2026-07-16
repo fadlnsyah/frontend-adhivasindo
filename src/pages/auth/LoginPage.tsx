@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
 import { type LoginFormValues, loginSchema } from '@/pages/auth/login.schema'
-import { login } from '@/services/auth.service'
+import { getLoginErrorMessage, login } from '@/services/auth.service'
 
 export function LoginPage() {
   const navigate = useNavigate()
@@ -37,8 +37,8 @@ export function LoginPage() {
 
       toast.success(response.message)
       navigate('/contents')
-    } catch {
-      toast.error('Login gagal')
+    } catch (error) {
+      toast.error(getLoginErrorMessage(error))
     } finally {
       setIsSubmitting(false)
     }
@@ -65,7 +65,7 @@ export function LoginPage() {
           </p>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit(handleLogin)}>
+        <form className="space-y-5" noValidate onSubmit={handleSubmit(handleLogin)}>
           <div>
             <label
               className="mb-2 block text-sm font-semibold text-[#27243f]"
@@ -76,6 +76,8 @@ export function LoginPage() {
             <div className="relative">
               <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
               <Input
+                aria-invalid={Boolean(errors.email)}
+                autoComplete="email"
                 id="email"
                 placeholder="john@example.com"
                 type="email"
@@ -98,6 +100,8 @@ export function LoginPage() {
             <div className="relative">
               <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
               <Input
+                aria-invalid={Boolean(errors.password)}
+                autoComplete="current-password"
                 id="password"
                 placeholder="Minimal 8 karakter"
                 type="password"
@@ -113,7 +117,7 @@ export function LoginPage() {
           </div>
 
           <Button className="h-11 w-full" disabled={isSubmitting} type="submit">
-            {isSubmitting ? 'Loading...' : 'Login'}
+            {isSubmitting ? 'Memproses...' : 'Login'}
           </Button>
         </form>
       </Card>
