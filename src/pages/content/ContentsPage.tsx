@@ -8,6 +8,7 @@ import { ContentCard } from '@/components/content/ContentCard'
 import { ContentEmptyState } from '@/components/content/ContentEmptyState'
 import { ContentErrorState } from '@/components/content/ContentErrorState'
 import { ContentLoadingCard } from '@/components/content/ContentLoadingCard'
+import { Pagination } from '@/components/content/Pagination'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { PageContainer } from '@/components/common/PageContainer'
 import { SectionTitle } from '@/components/common/SectionTitle'
@@ -27,7 +28,8 @@ export function ContentsPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const queryClient = useQueryClient()
   const [selectedContent, setSelectedContent] = useState<Content | null>(null)
-  const page = Number(searchParams.get('page') ?? '1')
+  const pageParam = Number(searchParams.get('page') ?? '1')
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1
   const search = searchParams.get('search') ?? ''
   const [searchInput, setSearchInput] = useState(search)
   const debouncedSearch = useDebounce(searchInput, 300)
@@ -68,6 +70,19 @@ export function ContentsPage() {
 
   const contents = data?.data ?? []
   const isDeleting = deleteContentMutation.isPending
+  const meta = data?.meta
+
+  function handlePageChange(nextPage: number) {
+    const nextParams = new URLSearchParams(searchParams)
+
+    if (nextPage > 1) {
+      nextParams.set('page', String(nextPage))
+    } else {
+      nextParams.delete('page')
+    }
+
+    setSearchParams(nextParams)
+  }
 
   return (
     <AppLayout>
@@ -126,6 +141,16 @@ export function ContentsPage() {
               />
             ))}
           </div>
+        ) : null}
+
+        {!isLoading && !isError && meta ? (
+          <Pagination
+            currentPage={meta.current_page}
+            lastPage={meta.last_page}
+            onPageChange={handlePageChange}
+            perPage={meta.per_page}
+            total={meta.total}
+          />
         ) : null}
 
         {selectedContent ? (
