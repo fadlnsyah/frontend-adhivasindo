@@ -1,4 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
+import { Plus } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 import { ContentCard } from '@/components/content/ContentCard'
 import { ContentEmptyState } from '@/components/content/ContentEmptyState'
@@ -7,9 +9,11 @@ import { ContentLoadingCard } from '@/components/content/ContentLoadingCard'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { PageContainer } from '@/components/common/PageContainer'
 import { SectionTitle } from '@/components/common/SectionTitle'
+import { Button } from '@/components/ui/Button'
 import { getContents } from '@/services/content.service'
 
 export function ContentsPage() {
+  const navigate = useNavigate()
   const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ['contents'],
     queryFn: getContents,
@@ -20,11 +24,17 @@ export function ContentsPage() {
   return (
     <AppLayout>
       <PageContainer>
-        <div>
-          <SectionTitle eyebrow="Content">Content Management</SectionTitle>
-          <p className="mt-3 text-sm text-slate-500">
-            Daftar materi pembelajaran yang tersedia di LMS.
-          </p>
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <SectionTitle eyebrow="Content">Content Management</SectionTitle>
+            <p className="mt-3 text-sm text-slate-500">
+              Daftar materi pembelajaran yang tersedia di LMS.
+            </p>
+          </div>
+          <Button onClick={() => navigate('/contents/create')}>
+            <Plus className="mr-2 size-4" />
+            Create Content
+          </Button>
         </div>
 
         {isLoading ? (
