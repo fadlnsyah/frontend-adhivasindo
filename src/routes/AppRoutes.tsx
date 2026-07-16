@@ -4,14 +4,29 @@ import { LoginPage } from '@/pages/auth/LoginPage'
 import { ContentsPage } from '@/pages/content/ContentsPage'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { ProtectedRoute } from '@/routes/ProtectedRoute'
 
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
-      <Route path="/contents" element={<ContentsPage />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/contents"
+        element={
+          <ProtectedRoute>
+            <ContentsPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

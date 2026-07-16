@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
+import { saveToken, saveUser } from '@/lib/auth-storage'
 import { type LoginFormValues, loginSchema } from '@/pages/auth/login.schema'
 import { getLoginErrorMessage, login } from '@/services/auth.service'
 
@@ -32,11 +33,11 @@ export function LoginPage() {
     try {
       const response = await login(values)
 
-      localStorage.setItem('access_token', response.data.token)
-      localStorage.setItem('auth_user', JSON.stringify(response.data.user))
+      saveToken(response.data.token)
+      saveUser(response.data.user)
 
       toast.success(response.message)
-      navigate('/contents')
+      navigate('/dashboard')
     } catch (error) {
       toast.error(getLoginErrorMessage(error))
     } finally {
